@@ -26,4 +26,25 @@ public class UserController {
     public List<User> getAllUser(){
         return userService.findAll();
     }
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable int id){
+        User myUser = userService.findById(id);
+        if (myUser == null){
+            throw new RuntimeException("User not found" + id);
+        }
+        return myUser;
+    }
+    @DeleteMapping("users/{id}")
+    public String deleteUser(@PathVariable int id){
+        User myUser = userService.findById(id);
+        if(myUser == null){
+            throw new RuntimeException("User not found " + id);
+        }
+        userService.deleteById(id);
+        return "User deleted";
+    }
+    @PutMapping("/users")
+    public User updateUser(@RequestBody User user){
+        return userService.save(user);
+    }
 }
